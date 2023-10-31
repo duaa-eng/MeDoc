@@ -1,0 +1,39 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <title>Employee Records</title>  
+     {% load staticfiles %}  
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"/>  
+</head>  
+<body>  
+<table class="table table-striped table-bordered table-sm">  
+    <thead class="thead-dark">  
+    <tr>  
+        <th>Patient ID</th>  
+        <th>Patient Name</th>  
+        <th>Patient Email</th>  
+        <th>Patient Contact</th>  
+        <th>Actions</th>  
+    </tr>  
+    </thead>  
+    <tbody>  
+{% for patient in patients %}  
+    <tr>  
+        <td>{{ patient.eid }}</td>  
+        <td>{{ patient.ename }}</td>  
+        <td>{{ patient.eemail }}</td>  
+        <td>{{ patient.econtact }}</td>  
+        <td>  
+            <a href="/edit/{{ patient.id }}"><span class="glyphicon glyphicon-pencil" >Edit</span></a>  
+            <a href="/delete/{{ patient.id }}">Delete</a>  
+        </td>  
+    </tr>  
+{% endfor %}  
+    </tbody>  
+</table>  
+<br>  
+<br>  
+<center><a href="/patient" class="btn btn-primary">Add New Record</a></center>  
+</body>  
+</html>  
