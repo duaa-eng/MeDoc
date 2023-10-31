@@ -1,5 +1,5 @@
 """
-URL configuration for MEDOC project.
+URL configuration for me_doc project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
@@ -14,9 +14,16 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path
+from django.contrib import admin  
+from django.urls import path  
+from app import views  
 
-urlpatterns = [
-    path("admin/", admin.site.urls),
-]
+
+urlpatterns = [  
+    path('admin/', admin.site.urls),  
+    path('patient', views.patient),  
+    path('show',views.show),  
+    path('edit/<int:id>', views.edit),  
+    path('update/<int:id>', views.update),  
+    path('delete/<int:id>', views.destroy),  
+]  
