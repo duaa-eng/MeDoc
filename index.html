@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MeDoc</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Calendar js -->
+    <link rel="stylesheet" href="src/Stylesheet/calendar_style.css">
+    <!-- Initialize Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.4.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.4.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.4.1/firebase-auth-compat.js"></script>
+    <link rel="stylesheet" href="src/Stylesheet/index.css">
+    <!-- Google translate extension js-->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+        }
+    </script>
+    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</head>
+
+<!--<header>-->
+<!--    <div id="google_translate_element" style="width:30px; height:15px; margin-bottom:15px;-->
+<!--     margin-left: auto; margin-right:150px;"></div>-->
+<!--</header>-->
+
+<body>
+    <div id="firstPage" class="container-fluid sticky-top">
+        <nav class="navbar navbar-dark navbar-expand-lg">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navBar" aria-controls="navBar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse my-2 my-lg-0 justify-content-end" id="navBar">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <div class="nav-link" id="google_translate_element"></div>
+                    </li>
+                    <li class="dropdown nav-item">
+                        <a class="nav-link dropdown-toggle" href="#" id="resourceDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white">
+                            Resource <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="resourceDropdown" id="type">
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#thirdPage" class="nav-link" style="color: white">Events</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" style="color: white">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="login.html" class="nav-link" style="color: white"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="login.html" class="nav-link" style="color: white"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="divider" class="container-fluid">
+        <hr class="top-divider">
+        <div class="bottom-divider">
+            <p class="logo">Med Provider</p>
+        </div>
+    </div>
+    <div id="secondPage" class="container-fluid row align-items-center sticky-top">
+        <div id="secondDivTitle" style="text-align: center; margin: auto">
+            <h2>Resources</h2>
+        </div>
+        <div id="cardDiv" class="row container-fluid">
+            <div class="carousel slide row" data-ride="carousel" id="carouselPage">
+                <ol class="carousel-indicators row" id="carouselIndicator">
+                    <li data-target="#carouselPage" data-slide-to="0" class="active"></li>
+                </ol>
+                <a class="carousel-control-prev col-sm-1" href="#carouselPage" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <div class="carousel-inner col-sm-10" id="carouselDisplay">
+                    <div class='carousel-item active' id='itemDiv1'>
+                    </div>
+                </div>
+                <a class="carousel-control-next col-sm-1" href="#carouselPage" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="divider" class="container-fluid">
+        <hr class="top-divider">
+        <div class="bottom-divider">
+            <p class="logo">Med Provider</p>
+        </div>
+    </div>
+    <div id="thirdPage" class="container-fluid">
+        <section class="ftco-section">
+            <div class="row">
+                <h3 style="padding-left: 10%" id="typeTitle"></h3>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="content w-100">
+                        <div class="calendar-container">
+                            <div class="calendar">
+                                <div class="year-header">
+                                    <span class="left-button fa fa-chevron-left" id="prev"> </span>
+                                    <span class="year" id="label"></span>
+                                    <span class="right-button fa fa-chevron-right" id="next"> </span>
+                                </div>
+                                <table class="months-table w-100">
+                                    <tbody>
+                                    <tr class="months-row">
+                                        <td class="month">Jan</td>
+                                        <td class="month">Feb</td>
+                                        <td class="month">Mar</td>
+                                        <td class="month">Apr</td>
+                                        <td class="month">May</td>
+                                        <td class="month">Jun</td>
+                                        <td class="month">Jul</td>
+                                        <td class="month">Aug</td>
+                                        <td class="month">Sep</td>
+                                        <td class="month">Oct</td>
+                                        <td class="month">Nov</td>
+                                        <td class="month">Dec</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <table class="days-table w-100">
+                                    <td class="day">Sun</td>
+                                    <td class="day">Mon</td>
+                                    <td class="day">Tue</td>
+                                    <td class="day">Wed</td>
+                                    <td class="day">Thu</td>
+                                    <td class="day">Fri</td>
+                                    <td class="day">Sat</td>
+                                </table>
+                                <div class="frame">
+                                    <table class="dates-table w-100">
+                                        <tbody class="tbody">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <button class="button" id="today" style="float: right">Today</button>
+                            </div>
+                        </div>
+                        <div class="events-container">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div>
+                        <h2>Provider List: </h2>
+                    </div>
+                    <div id="providerList">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <footer>
+        <div class="container">
+            <div class="row">
+            <div class="col-sm">
+                    <p> Our Address <br>
+                    <p><a href="https://www.google.com/maps/" target="_blank"></a></p>
+            </div>
+            <div class="col-sm">
+                    <p> Hotline <br>
+                    <p><a href="tel: "></a></p>
+            </div>
+            <div class="col-sm">
+                <p> Email <br></p>
+                <p><a href="mailto: email@gmail.com">email@gmail.com</a></p>
+            </div>
+        </div>
+        </div>
+    </footer>
+    <script src="src/JavaScript/index.js"></script>
+    <script src="src/JavaScript/main.js"></script>
+</body>
+</html>

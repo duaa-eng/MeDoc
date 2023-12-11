@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <title>Public Server Site</title>
+</head>
+<body class="grey lighten-3">
+
+    <!-- NAVBAR -->
+    <nav class="z-depth-0 grey lighten-4">
+        <div class="nav-wrapper container">
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li class="logged-out">
+                    <a href="#" class="grey-text modal-trigger" data-target="modal-login">Login</a>
+                </li>
+                <li class="logged-out">
+                    <a href="#" class="grey-text modal-trigger" data-target="modal-signup">Sign up</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- SIGN UP DEV -->
+    <div id="modal-signup" style="margin: 0 10%">
+        <div class="modal-content">
+            <h4>Sign up</h4><br />
+            <form id="signup-form">
+                <div class="input-field">
+                    <input type="email" id="signup-email" required>
+                    <label for="signup-email">Email address</label>
+                </div>
+                <div class="input-field">
+                    <input type="password" id="signup-password" autocomplete="on" required>
+                    <label for="signup-password">Choose password</label>
+                </div>
+                <button class="btn yellow darken-2 z-depth-0">Sign up</button>
+            </form>
+            <div id="signup_error"></div>
+        </div>
+    </div>
+
+    <!-- LOGIN DEV -->
+    <div id="modal-login" style="margin: 0 10%">
+        <div class="modal-content">
+            <h4>Login</h4><br />
+            <form id="login-form">
+                <div class="input-field">
+                    <input type="email" id="login-email" required>
+                    <label for="login-email">Email address</label>
+                </div>
+                <div class="input-field">
+                    <input type="password" id="login-password" autocomplete="on" required />
+                    <label for="login-password">Your password</label>
+                </div>
+                <button class="btn yellow darken-2 z-depth-0">Login</button>
+            </form>
+            <div id="login_error"></div>
+        </div>
+    </div>
+<!--
+    &lt;!&ndash; ACCOUNT MODAL &ndash;&gt;
+    <div id="modal-account" class="modal">
+        <div class="modal-content center-align">
+            <h4>Account details</h4><br />
+            <div class="account-details"></div>
+        </div>
+    </div>
+-->
+
+<!--    &lt;!&ndash; CREATE GUIDE MODAL &ndash;&gt;
+    <div id="modal-create" class="modal">
+        <div class="modal-content">
+            <h4>Create Guide</h4><br />
+            <form id="create-form">
+                <div class="input-field">
+                    <input type="text" id="title" required>
+                    <label for="title">Guide Title</label>
+                </div>
+                <div class="input-field">
+                    <textarea id="content" class="materialize-textarea" required></textarea>
+                    <label for="content">Guide Content</label>
+                </div>
+                <button class="btn yellow darken-2 z-depth-0">Create</button>
+            </form>
+        </div>
+    </div>-->
+
+    <!-- Initialize Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.4.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.4.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.4.1/firebase-auth-compat.js"></script>
+    <script>
+        const firebaseApp = firebase.initializeApp({
+            apiKey: "AIzaSyDfMXzxWY2G_um9o1JMBAKdWEFtNk3_pWk",
+            authDomain: "public-service-site.firebaseapp.com",
+            projectId: "public-service-site",
+            storageBucket: "public-service-site.appspot.com",
+            messagingSenderId: "1085591140989",
+            appId: "1:1085591140989:web:9ffa3fe6ab34a0b61f0f14",
+            measurementId: "G-8908584Z3T"
+        });
+        const db = firebaseApp.firestore();
+        const auth = firebaseApp.auth();
+
+        // update firestore settings
+        db.settings({ timestampInSnapshots : true });
+
+    </script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="authTesting.js"></script>
+</body>
+</html>
