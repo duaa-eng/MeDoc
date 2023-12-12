@@ -7,97 +7,164 @@ from rest_framework.response import Response
 from rest_framework import permissions
 from .serializers import DoctorSerializer, PatientSerializer, PatientAppointmentSerializer, DoctorAppointmentSerializer
 
-class PatientApiView(APIView):
-    # add permission to check if user is authenticated
-    permission_classes = [permissions.IsAuthenticated]
+class PatientAPIView(APIView):
+    # Get all patients or create a new one
+    def get(self, request, format=None):
+        patients = Patient.objects.all()
+        serializer = PatientSerializer(patients, many=True)
+        return Response(serializer.data)
 
-    # 1. List all
-    def get(self, request, *args, **kwargs):
-        
-        todos = Patient.objects.filter(user = request.user.id)
-        serializer = PatientSerializer(Patient, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    
-    # 2. Create
-    def post(self, request, *args, **kwargs):
-        
-        data = {
-            'name': request.data.get('name'), 
-            'email': request.data.get('email'), 
-            'contact': request.data.get('contact'),
-            'user': request.user.id
-        }
-        serializer = PatientSerializer(data=data)
+    def post(self, request, format=None):
+        serializer = PatientSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class PatientDetailAPIView(APIView):
+    # Retrieve, update or delete a patient instance
+    def get_object(self, pk):
+        try:
+            return Patient.objects.get(pk=pk)
+        except Patient.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-class DoctorApiView(APIView):
-    # add permission to check if user is authenticated
-    permission_classes = [permissions.IsAuthenticated]
+    def get(self, request, pk, format=None):
+        patient = self.get_object(pk)
+        serializer = PatientSerializer(patient)
+        return Response(serializer.data)
 
-    # 1. List all
-    def get(self, request, *args, **kwargs):
-        
-        todos = Doctor.objects.filter(user = request.user.id)
-        serializer = DoctorSerializer(Doctor, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def put(self, request, pk, format=None):
+        patient = self.get_object(pk)
+        serializer = PatientSerializer(patient, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    
-    # 2. Create
-    def post(self, request, *args, **kwargs):
-        
-        data = {
-            'name': request.data.get('name'), 
-            'email': request.data.get('email'), 
-            'contact': request.data.get('contact'),
-            'speciality': request.data.get('speciality'),
-            'user': request.user.id
-        }
-        serializer = DoctorSerializer(data=data)
+    def delete(self, request, pk, format=None):
+        patient = self.get_object(pk)
+        patient.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class DoctorAPIView(APIView):
+    # Get all doctors or create a new one
+    def get(self, request, format=None):
+        doctors = Doctor.objects.all()
+        serializer = DoctorSerializer(doctors, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = DoctorSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class DoctorDetailAPIView(APIView):
+    # Retrieve, update or delete a doctor instance
+    def get_object(self, pk):
+        try:
+            return Doctor.objects.get(pk=pk)
+        except Doctor.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-class PatientAppointmentApiView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    def get(self, request, pk, format=None):
+        doctor = self.get_object(pk)
+        serializer = DoctorSerializer(doctor)
+        return Response(serializer.data)
 
-    # List all appointments for a patient
-    def get(self, request, *args, **kwargs):
-        appointments = PatientAppointment.objects.filter(patient__user=request.user)
+    def put(self, request, pk, format=None):
+        doctor = self.get_object(pk)
+        serializer = DoctorSerializer(doctor, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        doctor = self.get_object(pk)
+        doctor.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class PatientAppointmentAPIView(APIView):
+    # Get all patient appointments or create a new one
+    def get(self, request, format=None):
+        appointments = PatientAppointment.objects.all()
         serializer = PatientAppointmentSerializer(appointments, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data)
 
-    # Register a new appointment
-    def post(self, request, *args, **kwargs):
+    def post(self, request, format=None):
         serializer = PatientAppointmentSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class DoctorAppointmentApiView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    # List all appointments for a doctor
-    def get(self, request, *args, **kwargs):
-        appointments = DoctorAppointment.objects.filter(doctor__user=request.user)
-        serializer = DoctorAppointmentSerializer(appointments, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    # Example: Cancel an appointment
-    # You'll need to define the logic for identifying the specific appointment to cancel
-    def delete(self, request, appointment_id, *args, **kwargs):
+class PatientAppointmentDetailAPIView(APIView):
+    # Retrieve, update or delete a patient appointment instance.
+    def get_object(self, pk):
         try:
-            appointment = DoctorAppointment.objects.get(id=appointment_id, doctor__user=request.user)
-            appointment.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return PatientAppointment.objects.get(pk=pk)
+        except PatientAppointment.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+    def get(self, request, pk, format=None):
+        appointment = self.get_object(pk)
+        serializer = PatientAppointmentSerializer(appointment)
+        return Response(serializer.data)
+
+    def put(self, request, pk, format=None):
+        appointment = self.get_object(pk)
+        serializer = PatientAppointmentSerializer(appointment, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        appointment = self.get_object(pk)
+        appointment.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class DoctorAppointmentAPIView(APIView):
+    # Get all doctor appointments or create a new one
+    def get(self, request, format=None):
+        appointments = DoctorAppointment.objects.all()
+        serializer = DoctorAppointmentSerializer(appointments, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = DoctorAppointmentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class DoctorAppointmentDetailAPIView(APIView):
+    # Retrieve, update or delete a doctor appointment instance.
+    def get_object(self, pk):
+        try:
+            return DoctorAppointment.objects.get(pk=pk)
         except DoctorAppointment.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+    def get(self, request, pk, format=None):
+        appointment = self.get_object(pk)
+        serializer = DoctorAppointmentSerializer(appointment)
+        return Response(serializer.data)
+
+    def put(self, request, pk, format=None):
+        appointment = self.get_object(pk)
+        serializer = DoctorAppointmentSerializer(appointment, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        appointment = self.get_object(pk)
+        appointment.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
