@@ -7,22 +7,22 @@ from .models import DoctorAppointment, Patient, Doctor, PatientAppointment
 class PatientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patient
-        fields = ["user", "name", "email", "contact","timestamp"]
+        fields = ['id', 'name', 'email', 'contact_number', 'date_of_birth', 'address','timestamp']
         
 class DoctorSerializer(serializers.ModelSerializer):       
     class Meta:
         model = Doctor
-        fields = ["user","name" , "email", "contact", "speciality","timestamp"]
+        fields = ['id', 'name', 'email', 'contact_number', 'address','speciality','timestamp']
 
 class PatientAppointmentSerializer(serializers.ModelSerializer):
     class Meta:
         model=PatientAppointment
-        fields=["patient","doctor","appointment_time","status","notes"]
+        fields = '__all__' 
 
         
 class DoctorAppointmentSerializer(serializers.ModelSerializer):
     class Meta:
         model=DoctorAppointment
-        fiels=["doctor","patient","appointment_time","status","notes"]
+        fields = '__all__' 
 
         

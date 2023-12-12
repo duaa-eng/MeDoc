@@ -21,12 +21,22 @@ from web_app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
-    path('api', views.PatientApiView.as_view()),
-    path('api', views.DoctorApiView.as_view()),
+    # path('patient', views.PatientApiView.as_view()),
+    # path('doctor', views.DoctorApiView.as_view()),
+    path('patients/',views.PatientAPIView.as_view(), name='patients'),
+    path('patients/<int:pk>/',views. PatientDetailAPIView.as_view(), name='patient-detail'),
+    path('doctors/', views.DoctorAPIView.as_view(), name='doctors'),
+    path('doctors/<int:pk>/',views.DoctorDetailAPIView.as_view(), name='doctor-detail'),
+    # ... other url patterns ...
     path('chatbot/', include('chatbot_app.urls')),  # Include the URLs of chatbot app
-    path('api',views.PatientAppointmentApiView.as_view()),
-    path('api',views.DoctorAppointmentApiView.as_view()),
+    path('doctor-appointments/', views.DoctorAppointmentAPIView.as_view(), name='doctor-appointments'),
+    path('doctor-appointments/<int:pk>/', views.DoctorAppointmentDetailAPIView.as_view(), name='doctor-appointment-detail'),
+    path('patient-appointments/', views.PatientAppointmentAPIView.as_view(), name='patient-appointments'),
+    path('patient-appointments/<int:pk>/', views.PatientAppointmentDetailAPIView.as_view(), name='patient-appointment-detail'),
+    # ... other url patterns ...
 ]
+
+
 # ]
 # urlpatterns = [  
 #     path('admin/', admin.site.urls),  

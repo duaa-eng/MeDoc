@@ -3,10 +3,12 @@ from django.contrib.auth.models import User
 
 
 class Patient(models.Model):  
-    user = models.ForeignKey(User, on_delete = models.CASCADE, blank = True, null = True)  
-    name = models.CharField(max_length=100)  
-    email = models.EmailField()  
-    contact = models.CharField(max_length=15)  
+    # user = models.ForeignKey(User, on_delete = models.CASCADE, blank = True, null = True)  
+    name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    contact_number = models.CharField(max_length=15)
+    date_of_birth = models.DateField()
+    address = models.TextField() 
     timestamp = models.DateTimeField(auto_now_add = True, auto_now = False, blank = True)
 
     class Meta:  
@@ -15,10 +17,11 @@ class Patient(models.Model):
         return self.name 
 
 class Doctor(models.Model):  
-    user = models.ForeignKey(User, on_delete = models.CASCADE, blank = True, null = True)  
-    name = models.CharField(max_length=100)  
-    email = models.EmailField()  
-    contact = models.CharField(max_length=15)  
+    # user = models.ForeignKey(User, on_delete = models.CASCADE, blank = True, null = True)  
+    name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    contact_number = models.CharField(max_length=15)
+    address = models.TextField() 
     speciality= models.CharField(max_length=100)
     timestamp = models.DateTimeField(auto_now_add = True, auto_now = False, blank = True)
     class Meta:  
@@ -51,3 +54,5 @@ class DoctorAppointment(models.Model):
 
     def __str__(self):
         return f"{self.doctor.name} with {self.patient.name} on {self.appointment_time}"
+
+        
