@@ -18,13 +18,12 @@ from django.contrib import admin
 from django.urls import path , include
 from app import views
 
-from app import views
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('api', views.PatientApiView.as_view()),
     path('api', views.DoctorApiView.as_view()),
+    path('chatbot/', include('chatbot_app.urls')),  # Include the URLs of chatbot app
 ]
 # ]
 # urlpatterns = [  
