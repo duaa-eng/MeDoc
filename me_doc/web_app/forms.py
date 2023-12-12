@@ -1,5 +1,5 @@
 from django import forms  
-from app.models import Patient  
+from web_app.models import Patient  
 class PatientForm(forms.ModelForm):  
     class Meta:  
         model = Patient

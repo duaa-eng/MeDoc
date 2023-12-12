@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect  
-from app.forms import PatientForm  
-from app.models import Patient, Doctor  
+from web_app.forms import PatientForm  
+from web_app.models import Patient, Doctor , PatientAppointment, DoctorAppointment
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework import permissions
-from .serializers import DoctorSerializer, PatientSerializer
+from .serializers import DoctorSerializer, PatientSerializer, PatientAppointmentSerializer, DoctorAppointmentSerializer
 
 class PatientApiView(APIView):
     # add permission to check if user is authenticated
@@ -64,3 +64,40 @@ class DoctorApiView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PatientAppointmentApiView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    # List all appointments for a patient
+    def get(self, request, *args, **kwargs):
+        appointments = PatientAppointment.objects.filter(patient__user=request.user)
+        serializer = PatientAppointmentSerializer(appointments, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # Register a new appointment
+    def post(self, request, *args, **kwargs):
+        serializer = PatientAppointmentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class DoctorAppointmentApiView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    # List all appointments for a doctor
+    def get(self, request, *args, **kwargs):
+        appointments = DoctorAppointment.objects.filter(doctor__user=request.user)
+        serializer = DoctorAppointmentSerializer(appointments, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # Example: Cancel an appointment
+    # You'll need to define the logic for identifying the specific appointment to cancel
+    def delete(self, request, appointment_id, *args, **kwargs):
+        try:
+            appointment = DoctorAppointment.objects.get(id=appointment_id, doctor__user=request.user)
+            appointment.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except DoctorAppointment.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
