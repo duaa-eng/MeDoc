@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <title>MeDoc</title>
+
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href={% static 'chatbot_app/styles.css' %} />
+        
+        <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+    </head>
+    <body>
+
+        <h1>MeDoc Virtual Assistant</h1>
+
+        <div>
+            <div id="chatbot">
+                <p id='botText'><span>Hi, how can i help you</span></p>
+            </div>
+
+            <div id="userInput">
+                <input type="text" id="textInput" name="userMessage" placeholder="Enter your message here..." required/>
+                <input type="submit" value="Send" id="buttonInput" />
+            </div>
+        </div>
+
+
+        <script>
+            function getUserInput(){
+                var userText = $('#textInput').val();
+                var userHTML = "<p class='userText'>User: <span>"+userText+"</span></p>";
+                
+                $('#textInput').val("");
+                $('#chatbot').append(userHTML);
+
+                //make ajax request to send user text to the backend python server
+                $.get('chatbot/getResponse',{userMessage:userText}).done(function(data){
+
+                    var returnedResponse = "<p class='botText'>Chatbot: <span>"+data+"</span></p>";
+                    $('#chatbot').append(returnedResponse);
+                })
+            }
+
+
+            $('#buttonInput').click(function(){
+                getUserInput();
+            })
+        </script>
+    </body>
+</html>
