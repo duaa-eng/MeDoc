@@ -1,0 +1,82 @@
+html{
+	height: 100%;
+}
+body {
+	background-image: url("../Image/welcome-background.jpg");
+	margin: 0%;
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+#login_background {
+	background-color: #608461;
+	margin-top: 200px;
+	padding: 60px;
+	width: 500px;
+	border: 1px #608461;
+	box-sizing: content-box;
+	position: relative;
+}
+.login_title{
+	color:#FFFFFF;
+	text-align: center;
+}
+.login_text{
+	color:#FFFFFF;
+	padding-top: 10px;
+	font-family: Bell MT;
+	font-size: 25px;
+	font-weight: 10;
+	line-height: 33px;
+}
+.login_input{
+	padding: 5px;
+}
+#login_button {
+	background-color: #EAEAEA;
+	color: #29462D;
+	position: absolute;
+	padding: 0px 35px;
+	top: 50%;
+	left: 50%;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	font-family: Arial Rounded MT;
+	font-size: 25px;
+	font-weight: bold;
+	line-height: 41px;
+}
+.signup_input {
+	background-color: #E6E6E6;
+}
+#signup_background {
+	background-color:#FFFCF1;
+	margin-top: 150px;
+	padding: 50px;
+	width: 500px;
+	border: 1px #608461;
+	box-sizing: content-box;
+	position: relative;
+}
+.signup_text {
+	font-family: Arial Rounded MT;
+	font-size: 25px;
+	font-weight: bold;
+	line-height: 41px;
+	color: #19421E
+}
+#signup_button{
+	background-color: #416246;
+	color: white;
+	padding: 0px 30px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	font-family: Arial Rounded MT;
+	font-size: 25px;
+	font-weight: bold;
+	line-height: 41px;
+}
