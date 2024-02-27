@@ -36,8 +36,7 @@ st.title("Hello, I'm Medoc Chatbot")
 os.environ['OPENAI_API_KEY'] = "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"
 
 # Mode selection
-mode = st.radio("Select Mode:", ('Developer Mode', 'User Mode'))
-if mode == 'Developer Mode':
+if (mode := st.radio("Select Mode:", ('Developer Mode', 'User Mode'))) == 'Developer Mode':
     st.session_state['mode'] = 'developer'
 elif mode == 'User Mode':
     query = ''
