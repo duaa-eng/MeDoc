@@ -9,7 +9,7 @@ from langchain.document_loaders import UnstructuredURLLoader
 
 #Extract URLs from website
 def parse_sitemap(url):
-    response = requests.get(url)
+    response = requests.get(url, timeout=60)
     soup = BeautifulSoup(response.content, "lxml")
 
     urls = [element.text for element in soup.find_all("loc")]
