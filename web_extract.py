@@ -1,15 +1,15 @@
-import requests
 # from bs4 import BeautifulSoup
 import langchain
 from langchain.text_splitter import CharacterTextSplitter
 import pandas as pd
 from bs4 import BeautifulSoup
 from langchain.document_loaders import UnstructuredURLLoader
+from security import safe_requests
 
 
 #Extract URLs from website
 def parse_sitemap(url):
-    response = requests.get(url)
+    response = safe_requests.get(url)
     soup = BeautifulSoup(response.content, "lxml")
 
     urls = [element.text for element in soup.find_all("loc")]
